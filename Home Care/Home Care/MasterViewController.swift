@@ -8,11 +8,10 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, DetailViewControllerDelegate {
 
     var detailViewController: DetailViewController? = nil
-    var tasks = ["Todays's patients", "Add patients", "Read QR-code", "Settings"]
-
+    var tasks = ["Asiakkaat", "Lisää asiakkaita", "Lue QR-koodi", "Asetukset"]
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,15 +22,28 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+//        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.title = "Sara Mäki"
         
         let controllers = self.splitViewController!.viewControllers
-        self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController        
+        self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
+        self.detailViewController?.delegate = self
+        self.detailViewController?.detailItem = "Asiakkaat"
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func customerHasBeenChosen(chosen: Bool) {
+        if chosen == true {
+            self.tasks = ["Jokinen, Pirkko\n123456-123X\nKuusitie 8\n00100 Helsinki", "Tehtävät", "Huomiot", "Hoitosuunnitelma", "Lääkelista", "Kuvat"]
+        } else {
+            self.tasks = ["Asiakkaat", "Lisää asiakkaita", "Lue QR-koodi", "Asetukset"]
+        }
+        
+        self.tableView.reloadData()
     }
 
     // MARK: - Segues
@@ -39,11 +51,17 @@ class MasterViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow() {
+//                var selectedCell = self.tableView.cellForRowAtIndexPath(indexPath)
+//                println(selectedCell?.textLabel?.text)
                 let task = tasks[indexPath.row] as String
-                let controller = (segue.destinationViewController as UINavigationController).topViewController as DetailViewController
-                controller.detailItem = task
-                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                controller.navigationItem.leftItemsSupplementBackButton = true
+                
+                if task == "Asiakkaat" {
+                    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+                    controller.delegate = self
+                    controller.detailItem = task
+                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+                    controller.navigationItem.leftItemsSupplementBackButton = true
+                }
             }
         }
     }
@@ -59,7 +77,7 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)as! UITableViewCell
 
         let task = tasks[indexPath.row] as String
         cell.textLabel!.text = task
@@ -70,6 +88,7 @@ class MasterViewController: UITableViewController {
         // Return false if you do not want the specified item to be editable.
         return false
     }
+    
 
 //    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 //        if editingStyle == .Delete {

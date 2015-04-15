@@ -8,11 +8,11 @@
 
 import UIKit
 
-class DetailViewController: UITableViewController {
+protocol DetailViewControllerDelegate {
+    func customerHasBeenChosen(chosen: Bool)
+}
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
-
-
+class DetailViewController: UITableViewController, UINavigationControllerDelegate {
     var detailItem: String? {
         didSet {
             // Update the view.
@@ -21,14 +21,16 @@ class DetailViewController: UITableViewController {
     }
     
     var patients = [
-        "9:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
-        "10:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
-        "11:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
-        "12:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
-        "13:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
-        "14:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
-        "15:00 Emmanuel Marvin 123456-123X - 42 Main street, Central, IN 47110",
+        "8:00-8.45 Jokinen, Pirkko - Kuusitie 8 B 6, 00100 Helsinki",
+        "9.00-9.45 Hollo, Terhi - Rauhankatu 84 A 1, 00800 Helsinki",
+        "10.00-10.45 Lindström, Isto - Hillerikuja 6 A 4, 00800 Helsinki",
+        "11.00-11.45 Hirvelä, Annukka - Peuratie 12 C 3, 00800 Helsinki",
+        "12.00-12.45 Haapasalo, Tapani - Susikuja 2 D 31, 00800 Helsinki",
+        "13.00-13.45 Kalliomäki, Aili - Majavatie 3 D 25, 00800 Helsinki",
+        "14.00-14.45 Saariaho, Jouko - Ilvestie 4 C 34, 00800 Helsinki",
     ]
+    
+    var delegate: DetailViewControllerDelegate?
 
     func configureView() {
         // Update the user interface for the detail item.
@@ -44,10 +46,10 @@ class DetailViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.customerHasBeenChosen(false)
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -59,9 +61,9 @@ class DetailViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
 
-        if detailItem == "Todays's patients" {
+        if detailItem == "Asiakkaat" {
             let task = patients[indexPath.row] as String
             cell.textLabel!.text = task
 //            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -71,7 +73,7 @@ class DetailViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        delegate?.customerHasBeenChosen(true)
 //        let cell = tableView.cellForRowAtIndexPath(indexPath)
 //        
 //        if cell!.accessoryType == UITableViewCellAccessoryType.None {

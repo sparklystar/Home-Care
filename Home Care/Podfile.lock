@@ -1,1 +1,10 @@
-COCOAPODS: 0.36.1
+PODS:
+  - MSCellAccessory (1.1.2)
+
+DEPENDENCIES:
+  - MSCellAccessory
+
+SPEC CHECKSUMS:
+  MSCellAccessory: 8265f3cd2386c1f372da00232472605ab11426e4
+
+COCOAPODS: 0.36.3
