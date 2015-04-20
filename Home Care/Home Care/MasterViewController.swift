@@ -50,19 +50,19 @@ class MasterViewController: UITableViewController, DetailViewControllerDelegate 
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
-            if let indexPath = self.tableView.indexPathForSelectedRow() {
-//                var selectedCell = self.tableView.cellForRowAtIndexPath(indexPath)
-//                println(selectedCell?.textLabel?.text)
-                let task = tasks[indexPath.row] as String
-                
-                if task == "Asiakkaat" {
-                    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-                    controller.delegate = self
-                    controller.detailItem = task
-                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                    controller.navigationItem.leftItemsSupplementBackButton = true
-                }
-            }
+//            if let indexPath = self.tableView.indexPathForSelectedRow() {
+////                var selectedCell = self.tableView.cellForRowAtIndexPath(indexPath)
+////                println(selectedCell?.textLabel?.text)
+//                let task = tasks[indexPath.row] as String
+//                
+//                if task == "Asiakkaat" {
+//                    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+//                    controller.delegate = self
+//                    controller.detailItem = task
+//                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+//                    controller.navigationItem.leftItemsSupplementBackButton = true
+//                }
+//            }
         }
     }
 

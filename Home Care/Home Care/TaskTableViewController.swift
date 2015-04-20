@@ -12,12 +12,12 @@ import Foundation
 class TaskTableViewController: UITableViewController {
     var expandedSections =  NSMutableIndexSet()
     var segueShouldOccur: Bool?
-    var days = [
-        "Perjantai 12.8.2016\tSara M.\tSaapui: 9.03\tLähti\tAika:",
-        "Torstai 11.8.2016\tSara M\tSaapui: 9.03\tLähti: 9.46\tAika: 43 min.",
-        "Keskiviikko 10.8.2016\tSara M\tSaapui: 8.59\tLähti: 9.40\tAika: 41 min.",
-    ]
-//    var days = [String]()
+//    var days = [
+//        "Perjantai 12.8.2016\tSara M.\tSaapui: 9.03\tLähti\tAika:",
+//        "Torstai 11.8.2016\tSara M\tSaapui: 9.03\tLähti: 9.46\tAika: 43 min.",
+//        "Keskiviikko 10.8.2016\tSara M\tSaapui: 8.59\tLähti: 9.40\tAika: 41 min.",
+//    ]
+    var days = [String]()
     var tasks = ["Lääkkeet", "Ateriat", "Paino", "Lisätietoa"]
     
     override func viewDidLoad() {
@@ -63,7 +63,7 @@ class TaskTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         
-//        if !self.days.isEmpty {
+        if !self.days.isEmpty {
             if self.tableView(tableView, canCollapseSection: indexPath.section) {
                 if (indexPath.row == 0) {
                     cell.textLabel?.text = self.days[indexPath.section]
@@ -81,9 +81,9 @@ class TaskTableViewController: UITableViewController {
             } else {
                 cell.textLabel?.text = "Normal Cell"
             }
-//        } else {
-//            cell.textLabel?.text = ""
-//        }
+        } else {
+            cell.textLabel?.text = ""
+        }
         
         return cell
     }
