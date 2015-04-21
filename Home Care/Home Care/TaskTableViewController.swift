@@ -12,12 +12,12 @@ import Foundation
 class TaskTableViewController: UITableViewController {
     var expandedSections =  NSMutableIndexSet()
     var segueShouldOccur: Bool?
-//    var days = [
-//        "Perjantai 12.8.2016\tSara M.\tSaapui: 9.03\tLähti\tAika:",
-//        "Torstai 11.8.2016\tSara M\tSaapui: 9.03\tLähti: 9.46\tAika: 43 min.",
-//        "Keskiviikko 10.8.2016\tSara M\tSaapui: 8.59\tLähti: 9.40\tAika: 41 min.",
-//    ]
-    var days = [String]()
+    var days = [
+        "Perjantai 12.8.2016\tSara M.\tSaapui: 9.03\tLähti\tAika:",
+        "Torstai 11.8.2016\tSara M\tSaapui: 9.03\tLähti: 9.46\tAika: 43 min.",
+        "Keskiviikko 10.8.2016\tSara M\tSaapui: 8.59\tLähti: 9.40\tAika: 41 min.",
+    ]
+//    var days = [String]()
     var tasks = ["Lääkkeet", "Ateriat", "Paino", "Lisätietoa"]
     
     override func viewDidLoad() {
@@ -61,31 +61,43 @@ class TaskTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-        
-        if !self.days.isEmpty {
-            if self.tableView(tableView, canCollapseSection: indexPath.section) {
-                if (indexPath.row == 0) {
-                    cell.textLabel?.text = self.days[indexPath.section]
-                    
-                    if self.expandedSections.containsIndex(indexPath.section) {
-                        cell.accessoryView = MSCellAccessory(type: FLAT_FOLD_INDICATOR, color: UIColor(red: 0/255.0, green: 123/255.0, blue: 170/255.0, alpha: 1.0))
-                    } else {
-                        cell.accessoryView = MSCellAccessory(type: FLAT_UNFOLD_INDICATOR, color: UIColor(red: 0/255.0, green: 123/255.0, blue: 170/255.0, alpha: 1.0))
-                    }
+        if self.tableView(tableView, canCollapseSection: indexPath.section) {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("NormalCell", forIndexPath: indexPath) as! UITableViewCell
+                cell.textLabel?.text = self.days[indexPath.section]
+                
+                if self.expandedSections.containsIndex(indexPath.section) {
+                    cell.accessoryView = MSCellAccessory(type: FLAT_FOLD_INDICATOR, color: UIColor(red: 0/255.0, green: 123/255.0, blue: 170/255.0, alpha: 1.0))
                 } else {
-                    cell.textLabel?.text = self.tasks[indexPath.row-1]
-                    cell.accessoryView = nil
-                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    cell.accessoryView = MSCellAccessory(type: FLAT_UNFOLD_INDICATOR, color: UIColor(red: 0/255.0, green: 123/255.0, blue: 170/255.0, alpha: 1.0))
                 }
+                
+                return cell
+            } else if indexPath.row == 1 || indexPath.row == 2 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("NormalCell", forIndexPath: indexPath) as! NormalTableViewCell
+                cell.name.text = self.tasks[indexPath.row-1]
+                cell.option.selectedSegmentIndex = 2
+                
+                return cell
+            } else if indexPath.row == 3 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("WeightCell", forIndexPath: indexPath) as! WeightTableViewCell
+                cell.name.text = self.tasks[indexPath.row-1]
+                cell.weight.text = "50"
+                
+                return cell
             } else {
-                cell.textLabel?.text = "Normal Cell"
+                let cell = tableView.dequeueReusableCellWithIdentifier("AdditionalCell", forIndexPath: indexPath) as! AdditionalTableViewCell
+                cell.name.text = self.tasks[indexPath.row-1]
+                cell.info.text = "Check the blood"
+                
+                return cell
             }
         } else {
-            cell.textLabel?.text = ""
+            let cell = tableView.dequeueReusableCellWithIdentifier("NormalCell", forIndexPath: indexPath) as! UITableViewCell
+            cell.textLabel?.text = "Normal Cell"
+            
+            return cell
         }
-        
-        return cell
     }
     
     // MARK: - Table view delegate
@@ -121,11 +133,7 @@ class TaskTableViewController: UITableViewController {
                     self.tableView.insertRowsAtIndexPaths(tmpArray, withRowAnimation: UITableViewRowAnimation.Top)
                     cell.accessoryView = MSCellAccessory(type: FLAT_FOLD_INDICATOR, color: UIColor(red: 0/255.0, green: 123/255.0, blue: 170/255.0, alpha: 1.0))
                 }
-            } else {
-                performSegueWithIdentifier("showDetail", sender: self)
             }
-        } else {
-            performSegueWithIdentifier("showDetail", sender: self)
         }
     }
 
