@@ -86,9 +86,11 @@ class TaskTableViewController: UITableViewController {
                 
                 return cell
             } else {
+                tableView.rowHeight = UITableViewAutomaticDimension
+                tableView.estimatedRowHeight = 160.0
                 let cell = tableView.dequeueReusableCellWithIdentifier("AdditionalCell", forIndexPath: indexPath) as! AdditionalTableViewCell
                 cell.name.text = self.tasks[indexPath.row-1]
-                cell.info.text = "Check the blood"
+                cell.info.text = "- Vaikutti siltä, että"
                 
                 return cell
             }
